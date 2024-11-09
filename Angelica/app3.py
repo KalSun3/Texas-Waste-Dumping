@@ -40,7 +40,7 @@ marker_cluster = MarkerCluster().add_to(m)
 chemical_colors = {
     'Toluene': 'blue',
     'Methanol': 'green',
-    'Benzene': 'red',
+    'Lead': 'red',  # Updated to use "Lead" instead of "Benzene"
     'Xylene (mixed isomers)': 'purple',
     # Add more chemicals and colors as needed
 }
@@ -82,7 +82,7 @@ legend_html = '''
     <div style="margin-top: 8px;">
         <span style="display: inline-block; width: 20px; height: 12px; background-color: blue; margin-right: 8px;"></span> Toluene<br>
         <span style="display: inline-block; width: 20px; height: 12px; background-color: green; margin-right: 8px;"></span> Methanol<br>
-        <span style="display: inline-block; width: 20px; height: 12px; background-color: red; margin-right: 8px;"></span> Benzene<br>
+        <span style="display: inline-block; width: 20px; height: 12px; background-color: red; margin-right: 8px;"></span> Lead<br>
         <span style="display: inline-block; width: 20px; height: 12px; background-color: purple; margin-right: 8px;"></span> Xylene<br>
         <span style="display: inline-block; width: 20px; height: 12px; background-color: gray; margin-right: 8px;"></span> Other
     </div>
@@ -90,7 +90,6 @@ legend_html = '''
 '''
 
 m.get_root().html.add_child(folium.Element(legend_html))
-
 
 # Save the map to an HTML file and display it
 m.save("interactive_map_chemical_waste_with_legend.html")
