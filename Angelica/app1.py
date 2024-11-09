@@ -49,5 +49,5 @@ for _, row in county_year_data.iterrows():
     ).add_to(marker_cluster)
 
 # Save the map to an HTML file and display it
-m.save("interactive_map.html")
-print("Map has been created and saved as 'interactive_map.html'. Open this file to view the map.")
+m.save("interactive_map1.html")
+print("Map has been created and saved as 'interactive_map1.html'. Open this file to view the map.")
