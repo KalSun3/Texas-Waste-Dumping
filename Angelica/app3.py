@@ -2,6 +2,7 @@ import json
 import folium
 import pandas as pd
 from folium.plugins import MarkerCluster
+from branca.element import Template, MacroElement
 
 # List of JSON files
 files = ["data_9_to_11.json", "data_12_to_14.json", "data_15_to_17.json", "data_18_to_20.json", "data_21_to_23.json"]
@@ -21,24 +22,12 @@ required_columns = {'FACILITY_NAME', 'YEAR', 'LATITUDE', 'LONGITUDE', 'TOTAL_REL
 if not required_columns.issubset(all_data.columns):
     raise ValueError("Data must contain the columns: 'FACILITY_NAME', 'YEAR', 'LATITUDE', 'LONGITUDE', 'TOTAL_RELEASES', and 'CHEMICAL'.")
 
-# Debug: Check for missing values by year
-print("Missing values by year:")
-print(all_data.groupby('YEAR')[['FACILITY_NAME', 'TOTAL_RELEASES', 'LATITUDE', 'LONGITUDE', 'CHEMICAL']].apply(lambda x: x.isnull().sum()))
-
-# Debug: Print sample data for a specific year, like 2009
-print("Sample data for the year 2009:")
-print(all_data[all_data['YEAR'] == 2009].head())
-
 # Group data by facility name, year, and chemical, aggregating the total waste released for each year per facility and chemical
 facility_chemical_year_data = all_data.groupby(['FACILITY_NAME', 'YEAR', 'CHEMICAL']).agg(
     total_waste=('TOTAL_RELEASES', 'sum'),
     latitude=('LATITUDE', 'first'),
     longitude=('LONGITUDE', 'first')
 ).reset_index()
-
-# Debug: Check grouped data to verify multiple years and chemicals
-print("Sample of grouped data (20 rows):")
-print(facility_chemical_year_data.head(20))
 
 # Create a folium map centered around Texas with a zoom level suitable for an overview
 map_center = [31.0, -99.0]  # Texas approximate center
@@ -53,7 +42,6 @@ chemical_colors = {
     'Methanol': 'green',
     'Benzene': 'red',
     'Xylene (mixed isomers)': 'purple',
-    'Copper': 'orange',
     # Add more chemicals and colors as needed
 }
 
@@ -75,6 +63,35 @@ for _, row in facility_chemical_year_data.iterrows():
         icon=folium.Icon(color=color, icon="info-sign")
     ).add_to(marker_cluster)
 
+legend_html = '''
+<div style="
+    position: fixed;
+    bottom: 50px;
+    left: 50px;
+    width: 160px;
+    background-color: white;
+    border:2px solid grey;
+    z-index:9999;
+    font-size:14px;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    line-height: 1.5;
+    ">
+    <strong>Marker Colors by Chemical</strong><br>
+    <div style="margin-top: 8px;">
+        <span style="display: inline-block; width: 20px; height: 12px; background-color: blue; margin-right: 8px;"></span> Toluene<br>
+        <span style="display: inline-block; width: 20px; height: 12px; background-color: green; margin-right: 8px;"></span> Methanol<br>
+        <span style="display: inline-block; width: 20px; height: 12px; background-color: red; margin-right: 8px;"></span> Benzene<br>
+        <span style="display: inline-block; width: 20px; height: 12px; background-color: purple; margin-right: 8px;"></span> Xylene<br>
+        <span style="display: inline-block; width: 20px; height: 12px; background-color: gray; margin-right: 8px;"></span> Other
+    </div>
+</div>
+'''
+
+m.get_root().html.add_child(folium.Element(legend_html))
+
+
 # Save the map to an HTML file and display it
-m.save("interactive_map_chemical_waste.html")
-print("Map has been created and saved as 'interactive_map_chemical_waste.html'. Open this file to view the map.")
+m.save("interactive_map_chemical_waste_with_legend.html")
+print("Map has been created and saved as 'interactive_map_chemical_waste_with_legend.html'. Open this file to view the map.")
