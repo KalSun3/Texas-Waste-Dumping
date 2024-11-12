@@ -16,16 +16,13 @@ for file in files:
         df = pd.DataFrame(data)
         all_data = pd.concat([all_data, df], ignore_index=True)
 
-# Filter data to only include records from the year 2023
-all_data = all_data[all_data['YEAR'] == 2023]
-
 # Ensure required columns
-required_columns = {'FACILITY_NAME', 'YEAR', 'LATITUDE', 'LONGITUDE', 'TOTAL_RELEASES'}
+required_columns = {'COUNTY', 'YEAR', 'LATITUDE', 'LONGITUDE', 'TOTAL_RELEASES'}
 if not required_columns.issubset(all_data.columns):
-    raise ValueError("Data must contain the columns: 'FACILITY_NAME', 'YEAR', 'LATITUDE', 'LONGITUDE', and 'TOTAL_RELEASES'.")
+    raise ValueError("Data must contain the columns: 'COUNTY', 'YEAR', 'LATITUDE', 'LONGITUDE', and 'TOTAL_RELEASES'.")
 
-# Group data by facility name and year, aggregating the total waste released for each year per facility
-facility_year_data = all_data.groupby(['FACILITY_NAME', 'YEAR']).agg(
+# Group data by county and year, aggregating the total waste released for each year per county
+county_year_data = all_data.groupby(['COUNTY', 'YEAR']).agg(
     total_waste=('TOTAL_RELEASES', 'sum'),
     latitude=('LATITUDE', 'first'),
     longitude=('LONGITUDE', 'first')
@@ -38,19 +35,19 @@ m = folium.Map(location=map_center, zoom_start=6)
 # Use MarkerCluster to handle overlapping markers
 marker_cluster = MarkerCluster().add_to(m)
 
-# Add markers with popup to display facility name, year, and total waste
-for _, row in facility_year_data.iterrows():
-    # Popup content with facility name, year, and waste details
-    popup_text = f"<strong>Facility:</strong> {row['FACILITY_NAME']}<br>" \
+# Add markers with popup to display county name, year, and total waste
+for _, row in county_year_data.iterrows():
+    # Popup content with county, year, and waste details
+    popup_text = f"<strong>County:</strong> {row['COUNTY']}<br>" \
                  f"<strong>Year:</strong> {int(row['YEAR'])}<br>" \
                  f"<strong>Total Waste Released:</strong> {row['total_waste']} lbs"
     
-    # Add each marker to the marker cluster
+    # Ensure each marker is added only to the cluster, not as a standalone marker
     folium.Marker(
         location=[row['latitude'], row['longitude']],
         popup=popup_text
     ).add_to(marker_cluster)
 
 # Save the map to an HTML file and display it
-m.save("interactive_map_facility_2023.html")
-print("Map has been created and saved as 'interactive_map_facility_2023.html'. Open this file to view the map.")
+m.save("interactive_map_county.html")
+print("Map has been created and saved as 'interactive_map_county.html'. Open this file to view the map.")
