@@ -29,7 +29,7 @@ facility_chemical_year_data = all_data.groupby(['FACILITY_NAME', 'YEAR', 'CHEMIC
     longitude=('LONGITUDE', 'first')
 ).reset_index()
 
-# Create a folium map centered around Texas
+# Create a folium map centered around Texas with a zoom level suitable for an overview
 map_center = [31.0, -99.0]  # Texas approximate center
 m = folium.Map(location=map_center, zoom_start=6)
 
@@ -40,9 +40,9 @@ marker_cluster = MarkerCluster().add_to(m)
 chemical_colors = {
     'Toluene': 'blue',
     'Methanol': 'green',
-    'Lead': 'red',
+    'Lead': 'red',  # Updated to use "Lead" instead of "Benzene"
     'Xylene (mixed isomers)': 'purple',
-    
+    # Add more chemicals and colors as needed
 }
 
 # Add markers with popup to display facility name, year, chemical, and total waste
@@ -63,13 +63,12 @@ for _, row in facility_chemical_year_data.iterrows():
         icon=folium.Icon(color=color, icon="info-sign")
     ).add_to(marker_cluster)
 
-# Add a legend for chemical colors
 legend_html = '''
 <div style="
     position: fixed;
     bottom: 50px;
     left: 50px;
-    width: 200px;
+    width: 160px;
     background-color: white;
     border:2px solid grey;
     z-index:9999;
@@ -89,6 +88,7 @@ legend_html = '''
     </div>
 </div>
 '''
+
 m.get_root().html.add_child(folium.Element(legend_html))
 
 # Save the map to an HTML file and display it
