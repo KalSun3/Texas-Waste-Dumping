@@ -1,0 +1,41 @@
+Intro
+data was obtained from the Untied States Environmental Protection Agency (EPA) website (maybe provide link). EPA collects Toxics Release Inventory (TRI) data since 1987 for all of the US for facilities who meet the critera 
+what qualifies as a TRI?
+"Cancer or other chronic human health effects
+Significant adverse acute human health effects
+Significant adverse environmental effects"
+
+"The current TRI toxic chemical list contains 794 individually listed chemicals and 33 chemical categories."
+
+Laws and Regulatoiron 
+
+The purpose of the TRI program is to collect info from facilities to track progress in reducing waste and moving towards safer waste management 
+
+
+Emergency Planning and Community Right-to-Know Act (EPCRA):
+Pollution Prevention Act (PPA)
+​National Defense Authorization Act (NDAA) for Fiscal Year 2020
+Code of Federal Regulations (CFR)
+signed an EO 
+
+Our questions 
+
+General
+1.    	What companies produce the most amount of waste?
+2.    	What states have the most waste? (Top 5/10)*
+3.     	What county/city has the most dumping?
+4.    	Which type of waste is mostly dumped? (ex:metal/chemical)
+5.    	What industry has the most dumping?
+6.     	What chemicals are mostly being dumped?
+7.    	Dumping by the year?
+
+
+
+- data cleaning
+epa website provides information from 1987 but for this project we focused on the last 15 years in Tx (2009-2023)
+after downloading CVS files, coloums that we did not need were deleted and renamed using python
+because of the large files, the cvs's were divided into 5 different json file, 3 years in each file
+
+- Visuals
+- Results 
+
