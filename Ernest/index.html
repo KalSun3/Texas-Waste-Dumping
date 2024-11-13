@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plotly Visualization</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+  <h1>Environmental Data Visualization</h1>
+  <div id="bar-chart"></div>
+
+  <script>
+    // Load JSON data
+    d3.json("data_21_to_23.json")
+      .then(function(data) {
+        console.log(data);
+
+        // Extract necessary data for visualization with safety checks
+        const facilities = data.map(d => (d['4'] && d['4'][' FACILITY NAME']) ? d['4'][' FACILITY NAME'] : 'Unknown Facility');
+        const totalReleases = data.map(d => d['TOTAL_RELEASES'] !== undefined ? d['TOTAL_RELEASES'] : 0);
+
+        console.log(facilities);
+        console.log(totalReleases);
+
+        // Create bar chart
+        const trace = {
+          x: facilities,  // Use facilities here
+          y: totalReleases,
+          type: 'bar'
+        };
+
+        const layout = {
+          title: 'Total Releases by Facility',
+          xaxis: {
+            title: 'Facility Name'
+          },
+          yaxis: {
+            title: 'Total Releases (Pounds)'
+          }
+        };
+
+        Plotly.newPlot('bar-chart', [trace], layout);
+      })
+      .catch(function(error) {
+        console.error('Error loading the JSON data: ', error);
+      });
+  </script>
+</body>
+</html>

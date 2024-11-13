@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top 10 Facilities by Waste</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+  <h1>Top 10 Facilities with Highest Waste</h1>
+  <div id="bar-chart"></div>
+
+  <script>
+    // Load JSON data
+    d3.json("data_21_to_23.json")
+      .then(function(data) {
+        console.log(data);
+
+        // Extract necessary data for visualization with safety checks
+        const facilitiesData = data.map(d => ({
+          name: (d['4'] && d['4'][' FACILITY NAME']),
+          releases: d['TOTAL_RELEASES']
+        }));
+
+        // Sort facilities by total releases in descending order and take the top 10
+        const topFacilities = facilitiesData
+          .sort((a, b) => b.releases - a.releases)
+          .slice(0, 10);
+
+        // Prepare data for the chart
+        const facilities = topFacilities.map(d => d.name);
+        const totalReleases = topFacilities.map(d => d.releases);
+
+        console.log(facilities);
+        console.log(totalReleases);
+
+        // Create bar chart
+        const trace = {
+          x: facilities,
+          y: totalReleases,
+          type: 'bar'
+        };
+
+        const layout = {
+          title: 'Top 10 Facilities by Total Waste Releases',
+          xaxis: {
+            title: 'Facility Name'
+          },
+          yaxis: {
+            title: 'Total Releases (Pounds)'
+          }
+        };
+
+        Plotly.newPlot('bar-chart', [trace], layout);
+      })
+      .catch(function(error) {
+        console.error('Error loading the JSON data: ', error);
+      });
+  </script>
+</body>
+</html>
