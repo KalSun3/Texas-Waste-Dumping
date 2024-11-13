@@ -4,18 +4,9 @@ import pandas as pd
 from folium.plugins import MarkerCluster
 from branca.element import Template, MacroElement
 
-# List of JSON files
-files = ["data_9_to_11.json", "data_12_to_14.json", "data_15_to_17.json", "data_18_to_20.json", "data_21_to_23.json"]
-
-# Initialize an empty DataFrame
-all_data = pd.DataFrame()
-
-# Load data from each JSON file and combine them
-for file in files:
-    with open(file, 'r') as f:
-        data = json.load(f)
-        df = pd.DataFrame(data)
-        all_data = pd.concat([all_data, df], ignore_index=True)
+# Load data from the provided CSV file
+file_path = "CleanedFiles/2023_tx_cleaned.csv"  # Path to the uploaded CSV file
+all_data = pd.read_csv(file_path)
 
 # Ensure required columns
 required_columns = {'FACILITY_NAME', 'YEAR', 'LATITUDE', 'LONGITUDE', 'TOTAL_RELEASES', 'CHEMICAL'}
