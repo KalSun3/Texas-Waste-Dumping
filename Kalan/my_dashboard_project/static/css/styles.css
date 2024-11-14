@@ -1,60 +1,28 @@
-/* Basic styling for the dashboard */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+    background: black;
+
 }
 
-.dashboard-container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* Tab navigation styles */
-.tabs {
-    display: flex;
-    justify-content: space-around;
-    background-color: #f1f1f1;
-    border-bottom: 2px solid #ccc;
-}
-
-.tab-button {
-    background-color: #ddd;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.tab-button:hover {
-    background-color: #bbb;
-}
-
-.tab-button.active {
-    background-color: #4CAF50;
+nav {
     color: white;
+    text-align: center;
 }
 
-/* Tab content styling */
-.tab-content {
-    display: none; /* Hide all tab content by default */
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    margin-top: 20px;
+main {
+    margin: 5% 10%;
 }
 
-/* Show active tab content */
-.tab-content.active {
-    display: block;
+main img {
+    width: 50%;
+    margin-bottom: 50px;
 }
 
-.tab-section {
-    margin-bottom: 20px;
+main img:nth-child(odd) {
+    margin-right: 40%;
+    transform: rotate(-5deg);
 }
 
-h2 {
-    font-size: 24px;
+main img:nth-child(even) {
+    margin-left: 40%;
+    transform: rotate(5deg);
 }
